@@ -7,7 +7,7 @@ import threading
 class MidiPlayer:
 	def __init__(self, song_files=None, soundfont="GeneralUser-GS.sf2", autoplay_keys=None):
 		if song_files is None:
-			song_files = ["Shreksophone.mid", "Beat.mid", "Beat3.mid", "Batman.mid"]
+			song_files = ["Beat.mid", "Beat3.mid", "Batman.mid", "Shreksophone.mid"]
 		self.song_files = song_files
 		self.song_index = 0
 		self.mid = mido.MidiFile(self.song_files[self.song_index])
