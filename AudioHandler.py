@@ -16,7 +16,7 @@ class MidiPlayer:
 		self.fs = fluidsynth.Synth()
 		self.fs.setting("audio.period-size", 256)
 		for ch in range(16):
-		    self.fs.cc(ch, 7, 127)
+		    self.fs.cc(ch, 7, 110)
 		self.fs.start()
 		self.sfid = self.fs.sfload(soundfont)
 		self.fs.program_select(0, self.sfid, 0, 0)

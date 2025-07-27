@@ -31,7 +31,7 @@ def change_pitch(sound, factor):
     return pygame.sndarray.make_sound(resampled)
 
 
-pitch_factors = [x/10 for x in range(9, 15)]
+pitch_factors = [x/10 for x in range(9, 13)]
 pitched_sounds = [change_pitch(sound, f) for f in pitch_factors]
 
 
