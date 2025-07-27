@@ -14,7 +14,9 @@ class MidiPlayer:
         self.playlist_iter = iter(self.mid.play())
         self.playlist_lock = threading.Lock()
         self.fs = fluidsynth.FluidSynth(soundfont)
-        self.fs.set_gain(1.0)  # Default is 0.2, max is 10.0, try 1.0–2.0 for much louder
+        # self.fs.set_gain(1.0)  # Default is 0.2, max is 10.0, try 1.0–2.0 for much louder
+        for ch in range(16):
+            self.fs.cc(ch, 7, 127)
         self.fs.program_select(0, 0)
         self._autoplaying = False
         self._autoplay_thread = None
