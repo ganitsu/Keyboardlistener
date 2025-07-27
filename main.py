@@ -4,6 +4,7 @@ import pygame
 import random
 import numpy as np
 from AudioHandler import MidiPlayer
+import threading
 
 
 pressed_keys = set()
@@ -40,12 +41,16 @@ def touched_any(key, event_type):
     
     if key in ["enter", "a", "+", "-", "backspace"]:
         player.pressed(key, event_type)
+        return
     
     if key == "0" and event_type == "down":
-        requests.get("http://192.168.5.10:2060/dev0/togglePower")
-    
-    if key in ["enter", "a"]:
+        def do_request():
+            requests.get("http://192.168.5.10:2060/dev0/togglePower")
+        threading.Thread(target=do_request, daemon=True).start()
+        ps = pitched_sounds[-1]
+        ps.play()
         return
+    
     ps = random.choice(pitched_sounds)
     ps.play()
 
