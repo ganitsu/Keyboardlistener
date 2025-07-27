@@ -36,22 +36,13 @@ pitched_sounds = [change_pitch(sound, f) for f in pitch_factors]
 
 
 
-def touched_a(event_type):
-    print("Función touched_a ejecutada")
-    player.pressed("a", event_type)
-
-
-def touched_enter(event_type):
-    print("Función touched_enter ejecutada")
-    # requests.get("http://192.168.5.10:2060/dev0/togglePower")
-    player.pressed("enter", event_type)
-    
-        
-        
-
-
 def touched_any(key, event_type):
     
+    if key in ["enter", "a", "+", "-", "backspace"]:
+        player.pressed(key, event_type)
+    
+    if key == "0" and event_type == "down":
+        requests.get("http://192.168.5.10:2060/dev0/togglePower")
     
     if key in ["enter", "a"]:
         return

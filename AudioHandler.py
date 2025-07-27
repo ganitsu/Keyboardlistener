@@ -15,7 +15,7 @@ class MidiPlayer:
 		self.playlist_lock = threading.Lock()
 		self.fs = fluidsynth.Synth()
 		self.fs.setting("audio.period-size", 256)
-		self.fs.setting("synth.gain", 2.0)  # Default is 0.2, max is 10.0
+		self.fs.setting("synth.gain", 1.2) # Default is 0.2, max is 10.0
   
 		# for ch in range(16):
 		#     self.fs.cc(ch, 7, 110)
