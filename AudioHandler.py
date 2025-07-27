@@ -15,6 +15,7 @@ class MidiPlayer:
         self.playlist_lock = threading.Lock()
         self.fs = fluidsynth.Synth()
         self.fs.setting("audio.period-size", 256)
+        self.fs.set_gain(1.0)  # Default is 0.2, max is 10.0, try 1.0–2.0 for much louder
         self.fs.start()
         self.sfid = self.fs.sfload(soundfont)
         self.fs.program_select(0, self.sfid, 0, 0)
