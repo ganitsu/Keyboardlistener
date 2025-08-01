@@ -5,6 +5,17 @@ import random
 import numpy as np
 from AudioHandler import MidiPlayer
 import threading
+import signal
+import sys
+
+
+def handle_exit(signum, frame):
+    print("Exiting on signal", signum)
+    pygame.quit()
+    sys.exit(0)
+
+signal.signal(signal.SIGTERM, handle_exit)
+signal.signal(signal.SIGINT, handle_exit)  # Optional: handle Ctrl+C too
 
 
 pressed_keys = set()
