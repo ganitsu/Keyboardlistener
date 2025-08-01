@@ -25,7 +25,7 @@ sound = pygame.mixer.Sound("burp.wav")
 player = MidiPlayer(autoplay_keys=None)  # None means all keys will be used for autoplay
 
 claps = pygame.mixer.Sound("claps.wav")
-claps.set_volume(3.0)
+claps.set_volume(7.0)
 
 def change_pitch(sound, factor):
     # Extraer datos crudos del sonido
@@ -56,16 +56,18 @@ def touched_any(key, event_type):
         player.pressed(key, event_type)
         return
     
-    if key == "0" and event_type == "down":
-        def do_request():
-            requests.get("http://192.168.5.10:2060/dev0/togglePower")
-        threading.Thread(target=do_request, daemon=True).start()
-        ps = pitched_sounds[-1]
-        ps.play()
+    if key == "0":
+        if event_type == "down":
+            def do_request():
+                requests.get("http://192.168.5.10:2060/dev0/togglePower")
+            threading.Thread(target=do_request, daemon=True).start()
+            ps = pitched_sounds[-1]
+            ps.play()
         return
     
-    if key == "÷" and event_type == "down":
-        claps.play()
+    if key == "÷":
+        if event_type == "down":
+            claps.play()
         return
     
     if event_type == "down":
