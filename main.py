@@ -60,6 +60,7 @@ def touched_any(key, event_type):
     #Set the volume of the sound.
     ps.set_volume(0.2)
     ps.play()
+    print(f"Key pressed: {key}, event_type: {event_type}")
 
 # Podés definir más funciones touched_xxx() aquí.
 
@@ -73,7 +74,8 @@ def call_touched_function(key, event_type):
     if func:
         func(event_type)
     else:
-        print(f'Función "{func_name}" no existe')
+        pass
+        #print(f'Función "{func_name}" no existe')
 
 print("Escuchando teclas (Ctrl+C para salir)...")
 
