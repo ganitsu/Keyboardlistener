@@ -25,7 +25,9 @@ sound = pygame.mixer.Sound("burp.wav")
 player = MidiPlayer(autoplay_keys=None)  # None means all keys will be used for autoplay
 
 claps = pygame.mixer.Sound("claps.wav")
-claps.set_volume(7.0)
+raw = pygame.sndarray.array(claps)
+amplified = np.clip(raw * 3, -32768, 32767).astype(np.int16)  # Amplify by 3x, clip to int16 range
+claps_loud = pygame.sndarray.make_sound(amplified)
 
 def change_pitch(sound, factor):
     # Extraer datos crudos del sonido
@@ -67,7 +69,7 @@ def touched_any(key, event_type):
     
     if key == "÷":
         if event_type == "down":
-            claps.play()
+            claps_loud.play()
         return
     
     if event_type == "down":
