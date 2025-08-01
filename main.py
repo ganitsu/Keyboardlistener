@@ -64,7 +64,7 @@ def touched_any(key, event_type):
         ps.play()
         return
     
-    if key == "%" and event_type == "down":
+    if key == "÷" and event_type == "down":
         claps.play()
         return
     
