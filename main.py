@@ -25,7 +25,7 @@ sound = pygame.mixer.Sound("burp.wav")
 player = MidiPlayer(autoplay_keys=None)  # None means all keys will be used for autoplay
 
 claps = pygame.mixer.Sound("claps.wav")
-
+claps.set_volume(3.0)
 
 def change_pitch(sound, factor):
     # Extraer datos crudos del sonido
