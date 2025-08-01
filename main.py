@@ -32,7 +32,7 @@ def change_pitch(sound, factor):
     return pygame.sndarray.make_sound(resampled)
 
 
-pitch_factors = [x/10 for x in range(9, 13)]
+pitch_factors = [x/10 for x in range(9, 16)]
 pitched_sounds = [change_pitch(sound, f) for f in pitch_factors]
 
 
@@ -51,7 +51,14 @@ def touched_any(key, event_type):
         ps.play()
         return
     
-    ps = random.choice(pitched_sounds)
+    if event_type == "down":
+        #Use the upper half of the pitched sounds, acounting for the ammount of pitched sounds
+        ps = random.choice(pitched_sounds[len(pitched_sounds)//2:])
+    else:
+        #Use the lower half of the pitched sounds, acounting for the ammount of pitched sounds
+        ps = random.choice(pitched_sounds[:len(pitched_sounds)//2])
+    #Set the volume of the sound.
+    ps.set_volume(0.2)
     ps.play()
 
 # Podés definir más funciones touched_xxx() aquí.
