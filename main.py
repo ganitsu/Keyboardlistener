@@ -1,3 +1,4 @@
+
 import keyboard
 import requests
 import pygame
@@ -7,6 +8,39 @@ from AudioHandler import MidiPlayer
 import threading
 import signal
 import sys
+import time
+import os
+import io
+class UnderrunMonitor(io.TextIOWrapper):
+    def __init__(self, buffer, *args, **kwargs):
+        super().__init__(buffer, *args, **kwargs)
+        self.underrun_count = 0
+        self.lock = threading.Lock()
+    def write(self, s):
+        if "underrun occurred" in s:
+            with self.lock:
+                self.underrun_count += 1
+        return super().write(s)
+    def get_and_reset(self):
+        with self.lock:
+            c = self.underrun_count
+            self.underrun_count = 0
+            return c
+
+# Replace sys.stderr with our monitor
+stderr_monitor = UnderrunMonitor(sys.stderr.buffer, encoding=sys.stderr.encoding)
+sys.stderr = stderr_monitor
+
+def underrun_watcher():
+    while True:
+        time.sleep(30)
+        count = stderr_monitor.get_and_reset()
+        if count >= 15:
+            print(f"[ALERT] {count} ALSA underruns in 30s, restarting service...", flush=True)
+            os.system("systemctl restart keyboardlistener.service")
+            sys.exit(1)
+
+threading.Thread(target=underrun_watcher, daemon=True).start()
 
 
 def handle_exit(signum, frame):
