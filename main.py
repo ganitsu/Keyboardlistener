@@ -1,46 +1,41 @@
 
+import signal
+import os
+import sys
+import threading
+import time
+
+def intercept_stderr_and_count_underruns(threshold=15, window=30, service_name="keyboardlistener.service"):
+    r_fd, w_fd = os.pipe()
+    os.dup2(w_fd, 2)  # Replace stderr (fd 2) with our pipe
+    underrun_count = 0
+    start_time = time.time()
+
+    def monitor():
+        nonlocal underrun_count, start_time
+        with os.fdopen(r_fd, 'r') as pipe:
+            while True:
+                line = pipe.readline()
+                if "underrun occurred" in line:
+                    underrun_count += 1
+                if time.time() - start_time > window:
+                    if underrun_count >= threshold:
+                        print(f"[ALERT] {underrun_count} ALSA underruns in {window}s, restarting service...", flush=True)
+                        os.system(f"systemctl restart {service_name}")
+                        sys.exit(1)
+                    underrun_count = 0
+                    start_time = time.time()
+    threading.Thread(target=monitor, daemon=True).start()
+
+intercept_stderr_and_count_underruns()
+
+
 import keyboard
 import requests
 import pygame
 import random
 import numpy as np
 from AudioHandler import MidiPlayer
-import threading
-import signal
-import sys
-import time
-import os
-import io
-class UnderrunMonitor(io.TextIOWrapper):
-    def __init__(self, buffer, *args, **kwargs):
-        super().__init__(buffer, *args, **kwargs)
-        self.underrun_count = 0
-        self.lock = threading.Lock()
-    def write(self, s):
-        if "underrun occurred" in s:
-            with self.lock:
-                self.underrun_count += 1
-        return super().write(s)
-    def get_and_reset(self):
-        with self.lock:
-            c = self.underrun_count
-            self.underrun_count = 0
-            return c
-
-# Replace sys.stderr with our monitor
-stderr_monitor = UnderrunMonitor(sys.stderr.buffer, encoding=sys.stderr.encoding)
-sys.stderr = stderr_monitor
-
-def underrun_watcher():
-    while True:
-        time.sleep(30)
-        count = stderr_monitor.get_and_reset()
-        if count >= 15:
-            print(f"[ALERT] {count} ALSA underruns in 30s, restarting service...", flush=True)
-            os.system("systemctl restart keyboardlistener.service")
-            sys.exit(1)
-
-threading.Thread(target=underrun_watcher, daemon=True).start()
 
 
 def handle_exit(signum, frame):
