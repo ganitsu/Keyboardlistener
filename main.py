@@ -95,7 +95,7 @@ def touched_any(key, event_type):
     if key == "0":
         if event_type == "down":
             def do_request():
-                requests.get("http://192.168.5.10:2060/dev0/togglePower")
+                requests.get("http://127.0.0.0:2060/dev0/togglePower")
             threading.Thread(target=do_request, daemon=True).start()
             ps = pitched_sounds[-1]
             ps.play()
