@@ -17,6 +17,7 @@ class MidiPlayer:
         self.playlist_lock = threading.Lock()
 
         # --- FIXED FOR PULSEAUDIO ---
+        self.fs = fluidsynth.Synth()
         self.fs.setting("audio.period-size", 256)
         self.fs.setting("synth.gain", 3.0)
 
