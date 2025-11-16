@@ -13,7 +13,7 @@ class MidiPlayer:
 		self.mid = mido.MidiFile(self.song_files[self.song_index])
 		self.playlist_iter = iter(self.mid.play())
 		self.playlist_lock = threading.Lock()
-		self.fs = fluidsynth.Synth()
+		self.fs = fluidsynth.Synth(audio_driver="pulseaudio")
 		self.fs.setting("audio.period-size", 256)
 		self.fs.setting("synth.gain", 3.0) # Default is 0.2, max is 10.0
   
