@@ -5,7 +5,7 @@ import signal
 import threading
 
 # --- AUDIO BACKEND SELECTION ---
-os.environ["SDL_AUDIODRIVER"] = "pulse"   # Correct driver name for SDL
+os.environ["SDL_AUDIODRIVER"] = "alsa"   # Correct driver name for SDL
 
 # --- STDERR UNDERRUN MONITOR ---
 def intercept_underruns(threshold=15, window=30, service="keyboardlistener.service"):
