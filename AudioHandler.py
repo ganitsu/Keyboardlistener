@@ -17,11 +17,10 @@ class MidiPlayer:
         self.playlist_lock = threading.Lock()
 
         # --- FIXED FOR PULSEAUDIO ---
-        self.fs = fluidsynth.Synth(audio_driver="alsa")
         self.fs.setting("audio.period-size", 256)
         self.fs.setting("synth.gain", 3.0)
 
-        self.fs.start()
+        self.fs.start(driver="pulseaudio")
         self.sfid = self.fs.sfload(soundfont)
         self.fs.program_select(0, self.sfid, 0, 0)
 
