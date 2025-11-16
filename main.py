@@ -5,6 +5,9 @@ import sys
 import threading
 import time
 
+os.environ["SDL_AUDIODRIVER"] = "pulse_audio"
+
+
 def intercept_stderr_and_count_underruns(threshold=15, window=30, service_name="keyboardlistener.service"):
     r_fd, w_fd = os.pipe()
     os.dup2(w_fd, 2)  # Replace stderr (fd 2) with our pipe
