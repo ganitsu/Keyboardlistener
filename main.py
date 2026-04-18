@@ -36,7 +36,8 @@ def intercept_underruns(threshold=15, window=30, service="keyboardlistener.servi
 
 
 # --- IMPORTS AFTER AUDIO FIXED ---
-import keyboard
+from evdev import InputDevice, categorize, ecodes, list_devices
+from evdev.ecodes import EV_KEY, KEY
 import requests
 import pygame
 import random
@@ -65,6 +66,8 @@ claps = pygame.mixer.Sound("claps.wav")
 raw = pygame.sndarray.array(claps)
 amp = np.clip(raw * 3, -32768, 32767).astype(np.int16)
 claps_loud = pygame.sndarray.make_sound(amp)
+
+
 
 
 # --- PITCH SHIFT ---
@@ -132,18 +135,38 @@ def call_touched_function(key, event_type):
 print("Listening for keys…")
 
 while True:
-    event = keyboard.read_event()
+    # Find the keyboard device
+    def find_keyboard():
+        for path in list_devices():
+            dev = InputDevice(path)
+            caps = dev.capabilities()
+            if ecodes.EV_KEY in caps and ecodes.KEY_A in caps[ecodes.EV_KEY]:
+                return dev
+        raise RuntimeError("No keyboard device found")
 
-    # skip numlock noise
-    if event.name.lower() in ("num lock", "numlock"):
-        continue
+    dev = find_keyboard()
+    print(f"Using keyboard: {dev.name} at {dev.path}")
 
-    if event.event_type == keyboard.KEY_DOWN:
-        if event.name not in pressed_keys:
-            pressed_keys.add(event.name)
-            call_touched_function(event.name, "down")
+    for event in dev.read_loop():
+        if event.type != ecodes.EV_KEY:
+            continue
+        data = categorize(event)
+    
+        # get key name
+        key_name = ecodes.KEY[event.code]
+        if isinstance(key_name, list):
+            key_name = key_name[0]
+        key_name = key_name.replace("KEY_", "").lower()
 
-    elif event.event_type == keyboard.KEY_UP:
-        if event.name in pressed_keys:
-            pressed_keys.discard(event.name)
-            call_touched_function(event.name, "up")
+        # skip numlock noise
+        if key_name in ("numlock", "num_lock"):
+            continue
+
+        if data.keystate == data.key_down:
+            if key_name not in pressed_keys:
+                pressed_keys.add(key_name)
+                call_touched_function(key_name, "down")
+        elif data.keystate == data.key_up:
+            if key_name in pressed_keys:
+                pressed_keys.discard(key_name)
+                call_touched_function(key_name, "up")
