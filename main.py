@@ -3,6 +3,8 @@ import sys
 import time
 import signal
 import threading
+import subprocess
+
 
 # --- AUDIO BACKEND SELECTION ---
 os.environ["SDL_AUDIODRIVER"] = "pulse"   # Correct driver name for SDL
@@ -97,11 +99,11 @@ pressed_keys = set()
 def touched_any(key, event_type):
 
     # Pass specific keys to MIDI player
-    if key in ("enter", "a", "+", "-", "backspace"):
+    if key in ("kp1"):
         player.pressed(key, event_type)
         return
 
-    if key == "0" and event_type == "down":
+    if key == "kpenter" and event_type == "down":
         threading.Thread(target=lambda:
             requests.get("http://127.0.0.0:2060/dev0/togglePower"),
             daemon=True
@@ -109,8 +111,23 @@ def touched_any(key, event_type):
         pitched[-1].play()
         return
 
-    if key == "÷" and event_type == "down":
+    if key == "kpdot" and event_type == "down":
         claps_loud.play()
+        return
+    
+    if key == "kp0" and event_type == "down":
+        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control start"])
+        pitched[-1].play()
+        return
+    
+    if key == "kp0" and event_type == "down":
+        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control stop"])
+        pitched[-1].play()
+        return
+    
+    if key == "kp2" and event_type == "down":
+        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/Keyboardlistener/main.py"], env={"DISPLAY": ":0"})
+        pitched[-1].play()
         return
 
     # Select random pitched sound
