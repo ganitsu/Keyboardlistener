@@ -116,17 +116,17 @@ def touched_any(key, event_type):
         return
     
     if key == "kp0" and event_type == "down":
-        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control start"])
+        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control.py", "start"])
         pitched[-1].play()
         return
     
     if key == "kp0" and event_type == "down":
-        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control stop"])
+        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control.py", "stop"])
         pitched[-1].play()
         return
     
     if key == "kp2" and event_type == "down":
-        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/Keyboardlistener/main.py"], env={"DISPLAY": ":0"})
+        subprocess.run(["/mnt/main/MathToLatex/env/bin/python", "/mnt/main/MathToLatex/main.py"], env={"DISPLAY": ":0"})
         pitched[-1].play()
         return
 
