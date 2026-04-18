@@ -99,9 +99,7 @@ pressed_keys = set()
 def touched_any(key, event_type):
 
     # Pass specific keys to MIDI player
-    if key in ("kp1"):
-        player.pressed(key, event_type)
-        return
+    #Not now
 
     if key == "kpenter" and event_type == "down":
         threading.Thread(target=lambda:
@@ -126,7 +124,7 @@ def touched_any(key, event_type):
         return
     
     if key == "kp2" and event_type == "down":
-        subprocess.run(["/mnt/main/MathToLatex/env/bin/python", "/mnt/main/MathToLatex/main.py"], env={"DISPLAY": ":0"})
+        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"], env={"DISPLAY": ":0"})
         pitched[-1].play()
         return
 
