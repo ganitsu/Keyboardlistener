@@ -142,7 +142,7 @@ def touched_any(key, event_type):
     
 
         proc = subprocess.Popen(
-            ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py --mode display"],
+            ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py", "--mode", "display"],
             cwd="/mnt/main/MathToLatex",
             env=env
         )
