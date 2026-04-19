@@ -131,6 +131,7 @@ def touched_any(key, event_type):
         env["PULSE_RUNTIME_PATH"] = "/run/user/1000/pulse"
         env["PULSE_SERVER"] = "unix:/run/user/1000/pulse/native"
         env["HOME"] = "/home/nitsuga"
+        env.pop("SDL_AUDIODRIVER", None)
 
         if proc and proc.poll() is None:
             print("Terminating existing MathToLatex process…")
