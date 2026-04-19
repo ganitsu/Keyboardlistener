@@ -46,6 +46,7 @@ import random
 import numpy as np
 from AudioHandler import MidiPlayer
 
+proc = None
 
 # --- CLEAN EXIT ---
 def handle_exit(signum, frame):
@@ -118,13 +119,19 @@ def touched_any(key, event_type):
         pitched[-1].play()
         return
     
-    if key == "kp0" and event_type == "down":
+    if key == "kp1" and event_type == "down":
         subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control.py", "stop"])
         pitched[-1].play()
         return
     
     if key == "kp2" and event_type == "down":
-        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"], env={"DISPLAY": ":0"})
+        env = os.environ.copy()
+        env["DISPLAY"] = ":0"
+
+        proc = subprocess.Popen(
+            ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"],
+            env=env
+        )
         pitched[-1].play()
         return
 
