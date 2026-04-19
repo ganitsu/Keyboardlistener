@@ -117,12 +117,12 @@ def touched_any(key, event_type):
         return
     
     if key == "kp0" and event_type == "down":
-        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py start"])
+        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py", "start"])
         pitched[-1].play()
         return
     
     if key == "kp1" and event_type == "down":
-        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py stop"])
+        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py", "stop"])
         pitched[-1].play()
         return
     
