@@ -128,9 +128,22 @@ def touched_any(key, event_type):
         env = os.environ.copy()
         env["DISPLAY"] = ":0"
 
+        if proc and proc.poll() is None:
+            print("Terminating existing MathToLatex process…")
+            proc.terminate()
+            try:
+                proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                print("Force killing MathToLatex process…")
+                proc.kill()
+    
+
         proc = subprocess.Popen(
             ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"],
-            env=env
+            cwd="/mnt/main/MathToLatex",
+            env=env,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
         )
         pitched[-1].play()
         return
