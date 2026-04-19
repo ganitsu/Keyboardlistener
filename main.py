@@ -142,9 +142,7 @@ def touched_any(key, event_type):
         proc = subprocess.Popen(
             ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"],
             cwd="/mnt/main/MathToLatex",
-            env=env,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
+            env=env
         )
         pitched[-1].play()
         return
