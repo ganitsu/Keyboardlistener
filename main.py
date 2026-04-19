@@ -126,8 +126,11 @@ def touched_any(key, event_type):
         return
     
     if key == "kp2" and event_type == "down":
-        env = {}
+        env = os.environ.copy()
         env["DISPLAY"] = ":0"
+        env["PULSE_RUNTIME_PATH"] = "/run/user/1000/pulse"
+        env["PULSE_SERVER"] = "unix:/run/user/1000/pulse/native"
+        env["HOME"] = "/home/nitsuga"
 
         if proc and proc.poll() is None:
             print("Terminating existing MathToLatex process…")
