@@ -117,12 +117,12 @@ def touched_any(key, event_type):
         return
     
     if key == "kp0" and event_type == "down":
-        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control.py", "start"])
+        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py start"])
         pitched[-1].play()
         return
     
     if key == "kp1" and event_type == "down":
-        subprocess.run(["/mnt/main/Keyboardlistener/env/bin/python", "/mnt/main/audioBridge/mic_control.py", "stop"])
+        subprocess.run(["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/mic_control.py stop"])
         pitched[-1].play()
         return
     
@@ -148,6 +148,20 @@ def touched_any(key, event_type):
         )
         pitched[-1].play()
         return
+    
+    if key == "kp3" and event_type == "down":
+        # Terminate MathToLatex process if running
+        if proc and proc.poll() is None:
+            print("Terminating MathToLatex process…")
+            proc.terminate()
+            try:
+                proc.wait(timeout=2)
+            except subprocess.TimeoutExpired:
+                print("Force killing MathToLatex process…")
+                proc.kill()
+        pitched[-1].play()
+        return
+    
 
     # Select random pitched sound
     if event_type == "down":
