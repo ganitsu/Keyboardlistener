@@ -126,7 +126,7 @@ def touched_any(key, event_type):
         return
     
     if key == "kp2" and event_type == "down":
-        env = os.environ.copy()
+        env = {}
         env["DISPLAY"] = ":0"
 
         if proc and proc.poll() is None:
