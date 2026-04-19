@@ -129,12 +129,7 @@ def touched_any(key, event_type):
     if key == "kp2" and event_type == "down":
         env = os.environ.copy()
         env["DISPLAY"] = ":0"
-        env["PULSE_RUNTIME_PATH"] = "/run/user/1000/pulse"
-        env["PULSE_SERVER"] = "unix:/run/user/1000/pulse/native"
         env["HOME"] = "/home/nitsuga"
-        env.pop("SDL_AUDIODRIVER", None)
-        env.pop("PULSE_RUNTIME_PATH", None)  # remove and re-add clean
-        env["PULSE_RUNTIME_PATH"] = "/run/user/1000/pulse"
 
         if proc and proc.poll() is None:
             print("Terminating existing MathToLatex process…")
@@ -147,7 +142,7 @@ def touched_any(key, event_type):
     
 
         proc = subprocess.Popen(
-            ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py"],
+            ["/mnt/main/MathToLatex/venv/bin/python", "/mnt/main/MathToLatex/main.py --mode display"],
             cwd="/mnt/main/MathToLatex",
             env=env
         )
