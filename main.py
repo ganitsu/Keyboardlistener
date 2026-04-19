@@ -98,6 +98,7 @@ pitched = [change_pitch(sound, f) for f in pitch_factors]
 pressed_keys = set()
 
 def touched_any(key, event_type):
+    global proc
 
     # Pass specific keys to MIDI player
     #Not now
