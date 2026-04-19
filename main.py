@@ -139,6 +139,8 @@ def touched_any(key, event_type):
             except subprocess.TimeoutExpired:
                 print("Force killing MathToLatex process…")
                 proc.kill()
+            print("Existing MathToLatex process terminated")
+            return
     
 
         proc = subprocess.Popen(
