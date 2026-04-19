@@ -1,4 +1,5 @@
 import os
+print(dict(os.environ))
 import sys
 import time
 import signal
